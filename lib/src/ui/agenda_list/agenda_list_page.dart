@@ -1,7 +1,9 @@
+import 'package:agenda/src/commons/util/array_utils.dart';
 import 'package:agenda/src/ui/agenda_list/domain/config/agenda_list_config.dart';
 import 'package:agenda/src/ui/agenda_list/domain/model/agenda_model.dart';
 import 'package:agenda/src/ui/agenda_list/domain/notifier/agenda_list_notifier.dart';
 import 'package:agenda/src/ui/agenda_list/presenter/agenda_list_presenter.dart';
+import 'package:agenda/src/ui/agenda_list/widget/agenda_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,6 +44,7 @@ class _AgendaListState extends State<AgendaList>
             hasMoreRecords && !isLoadingState && dataList.isNotEmpty;
 
         return Scaffold(
+          backgroundColor: Colors.white70,
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             title: const Text('Nueva'),
@@ -57,11 +60,17 @@ class _AgendaListState extends State<AgendaList>
                         ? Text('Pantalla inicial de la agenda')
                         : Column(
                             children: [
-                              ...dataList
-                                  .map(
-                                    (e) => Text(e.text),
-                                  )
-                                  .toList(),
+                              if (dataList.isNotEmpty)
+                                ...dataList.builder<Widget>(
+                                  itemBuilder: (index, item) => AgendaCard(
+                                    model: item,
+                                    onPressed: _onItemPressed,
+                                  ),
+                                  addedItemBuilder: (index) => const SizedBox(
+                                    height: 8,
+                                  ),
+                                ),
+                              if (dataList.isEmpty) Text('No hay lista'),
                               if (isLoadingState) Text('Cargando ...'),
                               if (showMoreRecordsButton)
                                 ElevatedButton(
@@ -83,6 +92,8 @@ class _AgendaListState extends State<AgendaList>
   void _fetchData() {
     presenter.fetchData();
   }
+
+  void _onItemPressed(AgendaModel agendaModel) {}
 
   @override
   void initState() {

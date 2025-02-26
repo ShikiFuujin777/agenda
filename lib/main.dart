@@ -3,7 +3,8 @@ import 'package:agenda/src/ui/agenda_list/args/agenda_list_args.dart';
 import 'package:agenda/src/ui/agenda_list/domain/config/agenda_list_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/intl.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'src/repository/infra.dart';
 import 'src/ui/agenda_list/domain/gateway/agenda_list_gateway.dart';
 
@@ -25,6 +26,15 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('es', 'CO'),
+        ],
+        locale: const Locale('es', 'CO'),
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
